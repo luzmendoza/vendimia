@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+
+<style>
+
+/*
+stilo para el autocomplete
+*/
+.container{
+  width: 100%; 
+  height: 300px;
+}
+
+#searchResult{
+  list-style: none;
+  padding: 0px;
+  width: 250px;
+  position: absolute;
+  margin: 0;
+}
+
+#searchResult li{
+  background: lavender;
+  padding: 4px;
+  margin-bottom: 1px;
+}
+
+#searchResult li:nth-child(even){
+  background: cadetblue;
+  color: white;
+}
+
+#searchResult li:hover{
+  cursor: pointer;
+}
+
+input[type=text]{
+  padding: 5px;
+  width: 250px;
+  letter-spacing: 1px;
+  border-radius: 25px;
+}
+</style>
+
+<div ng-app="myApp" ng-controller="ventasCtrl"> 
+
+<div id="listado" ng-show="islistado == true">
+
+<div>
+<h2>Ventas Activas</h2>
+</div>
+<div>
+<h6><div ng-moddel="date">Fecha: 
+        {{date | date:'yyyy-MM-dd'}}
+        </div></h6>
+</div>
+<div class="row">
+ <button class="button buttonNuevo" ng-click="addventa()"><span class="fa fa-plus "></span> Nueva Venta</button>
+</div>
+
+<div style="overflow-x:auto;"> 
+<table>
+  <tr>
+    <th>Folio Venta</th>
+    <th>Clave Cliente</th>
+    <th>Nombre</th>
+    <th>Total</th>
+    <th>Fecha</th>
+	<!--<th></th>-->
+  </tr>
+  <tr ng-repeat="x in ventas">
+    <td>{{ x.folio }}</td>
+    <td>{{ x.clave }}</td>
+    <td>{{ x.nombre + " " + x.apellido_paterno + " " + x.apellido_materno}}</td>
+    <td>{{ x.total}}</td>
+    <td>{{ x.fecha}}</td>
+	<!--<td>
+	    	<button ng-click="cancelaventa(x.id)">Cancelar</button> 
+	</td>-->
+  </tr>
+</table>
+</div><!--rsponsive-->
+
+</div>
+
+<div id="nuevaventa" ng-show="isnuevo == true">  
+<h2>Registro de Ventas</h2>
+<h6><div ng-moddel="date">Fecha: 
+        {{date | date:'yyyy-MM-dd'}}
+        </div></h6>
+ <form name="frmVentas" novalidate>
+     <input type="hidden" ng-model="tasafinanciamiento">
+     <input type="hidden" ng-model="porcenganche">
+     <input type="hidden" ng-model="plazomaximo">
+     
+     
+<div class="row">
+    	<label class="col-1 col-s-2" for="folio">Folio</label>
+        <input class="col-3 col-s-3" type="text" ng-model="folio" disabled>
+</div>
+
+<div class="row">
+    <label class="col-1 col-s-2" for="cliente">Cliente</label>
+     <input type="hidden" ng-model="id_cliente">
+    <div ng-click='containerClicked();' >
+ 
+    <input class="col-3 col-s-3" type='text' 
+          ng-keyup='fetchCustomer()' 
+          ng-click='searchboxClicked($event);' 
+          ng-model='searchText' 
+          placeholder='Buscar cliente' name="cliente" onkeypress="return soloLetras(event)" maxlength="30" required>
+    <span style="color:red" ng-show="frmVentas.cliente.$touched && frmVentas.cliente.$error.required">El cliente es requerido.</span><br>
+    <ul id='searchResult' >
+      <li ng-click='setValue($index,$event)' 
+          ng-repeat="result in searchResult" >
+          {{ result.clave + " "+ result.nombre }}
+      </li>
+    </ul>
+    <label class="col-6 col-s-2" for="rfc" ng-model="rfc">{{rfc}}</label>
+  </div>
+   
+ </div>    
+    
+<div class="row">
+    <label class="col-1 col-s-2" for="articulo">Artículo</label>
+    <input type="hidden" ng-model="id_articulo">
+    <input type="hidden" ng-model="modelo">
+    <input type="hidden" ng-model="precio">
+    <input type="hidden" ng-model="existencia">
+    <div ng-click='containerClicked2();' >
+ 
+    <input class="col-3 col-s-3" type='text' 
+          ng-keyup='fetchItems()' 
+          ng-click='searchboxClicked2($event);' 
+          ng-model='searchItem' 
+          placeholder='Buscar articulo' name="articulo" onkeypress="return soloLetras(event)" maxlength="30" required>
+    <span style="color:red" ng-show="frmVentas.articulo.$touched && frmVentas.articulo.$error.required">El articulo es requerido.</span><br>
+    <ul id='searchResult' >
+      <li ng-click='setValue2($index,$event)' 
+          ng-repeat="result in searchResult2" >
+          {{ result.descripcion }}
+      </li>
+    </ul>
+ 
+  </div>
+        <button class="button buttonNuevo" ng-click="addArticulo()"><span class="fa fa-plus "></span> Agregar Articulo</button>
+</div>
+
+
+<div class="row">
+<table>
+    <thead>
+      <tr>
+        <th hidden></th>
+        <th>Descripcion Articulo</th>
+        <th>Modelo</th>
+        <th hidden></th>
+        <th>Cantidad</th>
+        <th hidden></th>
+        <th hidden></th>
+        <th>Precio</th>
+        <th>Importe</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="x in articulos">
+        <td hidden>{{ x.id }}</td>
+        <td>{{ x.descripcion }}</td>
+        <td>{{ x.modelo}}</td>
+        <th hidden>{{ x.cantidadant}}</th>
+        <td><input type="text" ng-enter="addCantidad(x)"  value="" data-ng-model="x.cantidad"  name="cantidad" onkeypress="return solonumeros(event)" maxlength="30" required>
+   </td>
+        <th hidden>{{ x.existencia}}</th>
+        <td hidden>{{ x.precio}}</td>
+        <td>{{ x.preciocalculado}}</td>
+        <td>{{ x.importe}}</td>
+    	<td>
+    	<button class="button buttonCancelar" ng-click="deleteitem(x)"><span class="fa fa-trash-o"></span> Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+ </div> 
+  
+  
+
+<div class="row">   
+<div id="calculos" ng-show="iscalculos == true">      
+<hr>
+<div class="row"> 
+    <label class="col-1 col-s-3" for="enganche">Enganche</label>
+    <input class="col-4 col-s-5 " type="text" ng-model="enganche"><br>
+</div>
+<div class="row"> 
+    <label class="col-1 col-s-3" for="bonificaacion_enganche">Bonificación Enganche</label>
+    <input  class="col-4 col-s-5 " type="text" ng-model="bonificacion">
+</div>
+<div class="row"> 
+    <label class="col-1 col-s-3" for="total">Total</label>
+    <input  class="col-4 col-s-5 " type="text" ng-model="total">
+</div>
+
+    <br><br>
+    <div id="botonescalculos" ng-show="isbotonescalculos == true">  
+    	<input type="hidden" ng-model="id">
+         <button class="button buttonCancelar" ng-click="cancelarventa()"><span class="fa fa-ban"></span> Cancelar</button>
+        <button class="button buttonGuardar" ng-click="siguiente()"><span class="fa fa-arrow-right "></span> Siguiente</button>
+    </div>
+     <br>
+ </div> 
+ 
+ </div>
+ 
+ <div id="gridmensualidades" ng-show="ismensualidades == true"> 
+  
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Abonos Mensuales</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="x in mensualidades">
+        <td hidden>{{ x.meses }}</td>
+        <td>{{ x.descripcion }}</td>
+        <td>{{ x.abono}}</td>
+        <td>{{ x.totalpagar}}</td>
+        <td>{{ x.ahorro}}</td>
+        <td><input type="radio" ng-model="x.tipomeses" ng-value="true"></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <br><br>
+    <button class="button buttonCancelar" ng-click="cancelarventa()"><span class="fa fa-ban"></span> Cancelar</button>
+    <button class="button buttonGuardar" ng-click="guardar()"><span class="fa fa-floppy-o"></span> Guardar</button>
+    <br><br>
+    
+</div>
+    
+  </form>
+  <br><br>
+  
+ 
+</div>
+
+</div>

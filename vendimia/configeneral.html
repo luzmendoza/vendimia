@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+
+
+
+<div ng-app="myApp" ng-controller="configeneralCtrl"> 
+
+<div>  
+<h2>Configuración General</h2>
+<div>
+<h6><div ng-moddel="date">Fecha: 
+        {{date | date:'yyyy-MM-dd'}}
+        </div></h6>
+</div>
+ <form name="frmGeneral" novalidate>
+   <label for="tasa_financiamiento">Tasa Financiamiento</label>
+    <input type="text" ng-model="tasa_financiamiento" name="tasa_financiamiento" onkeypress="return filterFloat(event,this)" maxlength="5" required>
+    <span style="color:red" ng-show="frmGeneral.tasa_financiamiento.$touched && frmGeneral.tasa_financiamiento.$error.required">La tasa de financiamiento es requerido.</span><br>
+    <label for="porc_enganche">% Enganche</label>
+    <input type="text" ng-model="porc_enganche" name="porc_enganche" onkeypress="return solonumeros(event)" maxlength="5" required>
+    <span style="color:red" ng-show="frmGeneral.porc_enganche.$touched && frmGeneral.porc_enganche.$error.required">El porcentaje de enganche es requerido.</span><br>
+	<label for="plazo_maximo">Plazo Máximo</label>
+    <input type="text" ng-model="plazo_maximo" name="plazo_maximo" onkeypress="return solonumeros(event)" maxlength="5" required>
+    <span style="color:red" ng-show="frmGeneral.plazo_maximo.$touched && frmGeneral.plazo_maximo.$error.required">El plazo máximo es requerido.</span><br>
+    <br><br>
+    <button class="button buttonGuardar" ng-click="guardar()"><span class="fa fa-floppy-o"></span> Guardar</button>
+  </form>
+</div>
+
+</div>

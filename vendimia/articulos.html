@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+
+
+<div ng-app="myApp" ng-controller="articulosCtrl"> 
+
+<div id="listado" ng-show="islistado == true">
+
+<div>
+<h2>Listado de Articulos</h2>
+
+</div>
+<h6><div ng-moddel="date">Fecha: 
+        {{date | date:'yyyy-MM-dd'}}
+        </div></h6>
+<div>
+    
+</div>
+<div>
+<button class="button buttonNuevo" ng-click="addItem()"><span class="fa fa-plus"></span> Nuevo</button>
+</div>
+
+
+<div style="overflow-x:auto;"> 
+<table>
+  <tr>
+    <th>Clave</th>
+    <th>Nombre</th>
+	<th></th>
+  </tr>
+  <tr ng-repeat="x in articulos">
+    <td>{{ x.clave }}</td>
+    <td>{{ x.descripcion}}</td>
+	<td>
+		<button class="button buttonEditar" ng-click="editItem(x.id,x.clave,x.descripcion,x.modelo,x.precio,x.existencia)"><span class="fa fa-pencil"></span> Editar</button>
+		<button  class="button buttonEliminar" ng-click="deleteItem(x.id)"><span class="fa fa-trash-o"></span> Eliminar</button> 
+	</td>
+  </tr>
+</table>
+</div><!--rsponsive-->
+
+</div>
+
+<div id="nuevoitem" ng-show="isnuevo == true">  
+<h2>Registro de Artículos</h2>
+</div>
+<h6><div ng-moddel="date">Fecha: 
+        {{date | date:'yyyy-MM-dd'}}
+        </div></h6>
+<div>
+ <form name="frmArticulos" novalidate>
+     <div class="row">
+        <label class="col-1 col-s-3" for="clave">Clave</label>
+        <input  class="col-4 col-s-5" type="text" ng-model="clave" disabled><br>
+    </div>
+    <label for="descripcion">Descripcion</label>
+    <input type="text" ng-model="descripcion" name="descripcion" ng-pattern="patterns.letras" onkeypress="return soloLetras(event)" maxlength="30" required>
+    <span style="color:red" ng-show="frmArticulos.descripcion.$touched && frmArticulos.descripcion.$error.required">La descripción es requerida.</span><br>
+    <span style="color:red" ng-show="frmArticulos.descripcion.$error.pattern">
+      Single word only!</span><br>
+   <label for="modelo">Modelo</label>
+    <input type="text" ng-model="modelo" maxlength="30"><br>
+	<label for="precio">Precio</label>
+    <input type="text" ng-model="precio" name="precio" onKeyPress="return filterFloat(event,this)" maxlength="9" required>
+    <span style="color:red" ng-show="frmArticulos.precio.$touched && frmArticulos.precio.$error.required">El precio es requerido.</span><br>
+	<label for="existencia">Existencia</label>
+    <input type="text" ng-model="existencia" name="existencia" onkeypress="return solonumeros(event)" maxlength="5" required>
+     <span style="color:red" ng-show="frmArticulos.existencia.$touched && frmArticulos.existencia.$error.required">La existencia es requerida.</span>
+    <br><br>
+	<input type="hidden" ng-model="id">
+    <button class="button buttonCancelar" ng-click="cancelar()"><span class="fa fa-ban"></span> Cancelar</button>
+    <button class="button buttonGuardar" ng-click="guardar()"><span class="fa fa-floppy-o"></span> Guardar</button>
+    
+  </form>
+</div>
+
+</div>

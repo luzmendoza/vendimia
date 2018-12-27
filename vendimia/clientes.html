@@ -1,0 +1,68 @@
+
+<div ng-app="myApp2" ng-controller="clientesCtrl"> 
+
+<div id="listado" ng-show="islistado == true">
+
+<div>
+<h2>Listado de clientes</h2>
+</div>
+<div>
+<h6><div ng-moddel="date">Fecha: 
+        {{date | date:'yyyy-MM-dd'}}
+        </div></h6>
+</div>
+<div>
+<button class="button buttonNuevo" ng-click="addcliente()"><span class="fa fa-plus"></span> Nuevo</button>
+</div>
+
+<div style="overflow-x:auto;"> 
+<table>
+  <tr>
+    <th>Clave</th>
+    <th>Nombre</th>
+	<th></th>
+  </tr>
+  <tr ng-repeat="x in clientes">
+    <td>{{ x.clave }}</td>
+    <td>{{ x.nombre + " " + x.apellido_paterno + " " + x.apellido_materno }}</td>
+	<td>
+		<button class="button buttonEditar" ng-click="editcliente(x.id,x.clave,x.nombre,x.apellido_paterno,x.apellido_materno,x.rfc)"><span class="fa fa-pencil"></span> Editar</button>
+		<button class="button buttonEliminar" ng-click="deletecliente(x.id)"><span class="fa fa-trash-o"></span> Eliminar</button> 
+	</td>
+  </tr>
+</table>
+</div><!--div tabla resposniva--> 
+
+</div>
+
+<div id="nuevocliente" ng-show="isnuevo == true">  
+<h2>Registro de Clientes</h2>
+<h6><div ng-moddel="date">Fecha: 
+        {{date | date:'yyyy-MM-dd'}}
+        </div></h6>
+ <form name="frmClientes" novalidate>
+	 <label for="clave">Clave</label>
+    <input type="text" ng-model="clave" disabled><br>
+     <label for="nombre">Nombre</label>
+    <input type="text" ng-model="nombre" name="nombre" onkeypress="return soloLetras(event)" maxlength="20" required>
+    <span style="color:red" ng-show="frmClientes.nombre.$touched && frmClientes.nombre.$error.required">El nombre es requerido.</span><br>
+     <label for="apellido_paterno">Apellido Paterno</label>
+    <input type="text" ng-model="apellido_paterno" name="apellido_paterno" onkeypress="return soloLetras(event)" maxlength="20" required>
+    <span style="color:red" ng-show="frmClientes.apellido_paterno.$touched && frmClientes.apellido_paterno.$error.required">El apellido paterno es requerido.</span><br>
+	<label for="apellido_materno">Apellido Materno</label>
+    <input type="text" ng-model="apellido_materno" name="apellido_materno" onkeypress="return soloLetras(event)" maxlength="20" required>
+    <span style="color:red" ng-show="frmClientes.apellido_materno.$touched && frmClientes.apellido_materno.$error.required">El apellido materno es requerido.</span><br>
+	<label for="rfc">RFC</label>
+    <input type="text" ng-model="rfc" name="rfc" onkeypress="return numerosyletras(event)" maxlength="20" required>
+    <span style="color:red" ng-show="frmClientes.rfc.$touched && frmClientes.rfc.$error.required">El rfc es requerido.</span>
+    <br><br>
+	<input type="hidden" ng-model="id">
+	<button class="button buttonCancelar" ng-click="cancelar()"><span class="fa fa-ban"></span> Cancelar</button>
+    <button class="button buttonGuardar" ng-click="guardar()"><span class="fa fa-floppy-o"></span> Guardar</button>
+    
+  </form>
+</div>
+
+</div>
+
+

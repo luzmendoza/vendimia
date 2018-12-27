@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+    <title>Vendimia</title>  
+    
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-route.js"></script>
+    <script src="scripts/validaciones.js"></script>
+    <script src="scripts/controllers.js"></script>
+   
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+}
+
+html {
+  font-family: "Lucida Sans", sans-serif;
+}
+
+.header {
+  background-color: #306779;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 25px;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 25px;
+}
+
+.menu li {
+  padding: 8px;
+  margin-bottom: 7px;
+  background-color: #33b5e5;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius: 25px;
+}
+
+.menu li:hover {
+  background-color: #0099cc;
+  border-radius: 25px;
+}
+
+.aside {
+  background-color: #33b5e5;
+  padding: 15px;
+  color: #ffffff;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.footer {
+  background-color: #0099cc;
+  color: #ffffff;
+  text-align: center;
+  font-size: 12px;
+  padding: 15px;
+  border-radius: 25px;
+}
+
+/* For mobile phones: */
+[class*="col-"] {
+  width: 100%;
+  
+}
+
+@media only screen and (min-width: 600px) {
+  /* For tablets: */
+  .col-s-1 {width: 8.33%;}
+  .col-s-2 {width: 16.66%;}
+  .col-s-3 {width: 25%;}
+  .col-s-4 {width: 33.33%;}
+  .col-s-5 {width: 41.66%;}
+  .col-s-6 {width: 50%;}
+  .col-s-7 {width: 58.33%;}
+  .col-s-8 {width: 66.66%;}
+  .col-s-9 {width: 75%;}
+  .col-s-10 {width: 83.33%;}
+  .col-s-11 {width: 91.66%;}
+  .col-s-12 {width: 100%;}
+  
+}
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .col-1 {width: 8.33%;}
+  .col-2 {width: 16.66%;}
+  .col-3 {width: 25%;}
+  .col-4 {width: 33.33%;}
+  .col-5 {width: 41.66%;}
+  .col-6 {width: 50%;}
+  .col-7 {width: 58.33%;}
+  .col-8 {width: 66.66%;}
+  .col-9 {width: 75%;}
+  .col-10 {width: 83.33%;}
+  .col-11 {width: 91.66%;}
+  .col-12 {width: 100%;}
+}
+
+ul, ol {
+	list-style:none;
+}
+
+.nav > li {
+	float:left;
+}
+
+.nav li a {
+	text-decoration:none;
+	padding:10px 12px;
+	display:block;
+}
+
+.nav li a:hover {
+	background-color:#306779;
+	border-radius: 25px;
+}
+
+.nav li ul {
+	display:none;
+	position:absolute;
+}
+
+.nav li:hover > ul {
+	display:block;
+}
+
+.nav li ul li {
+	position:relative;
+}
+
+.nav li ul li ul {
+	right:-140px;
+	top:0px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #306779;
+  color: white;
+}
+
+
+.button {
+  background-color: #306779; /* azuuul */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px 1px;
+  cursor: pointer;
+}
+
+.buttonNuevo {background-color: #008CBA;border-radius: 12px; padding: 10px 20px;font-size: 12px;} /* Blue */
+.buttonGuardar {background-color: #008CBA;border-radius: 12px; padding: 10px 20px;font-size: 12px;} /* Blue */
+.buttonCancelar {background-color: #f44336;border-radius: 12px; padding: 10px 20px;font-size: 12px;} /* Blue */
+.buttonEditar {background-color: #008CBA;border-radius: 12px;padding: 5px 15px;font-size: 10px;} /* Blue para grid*/
+.buttonEliminar {background-color: #f44336;border-radius: 12px;padding: 5px 15px;font-size: 10px;} /* Red para grid*/ 
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 3px solid #ccc;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+  border-radius: 25px;
+}
+
+input[type=text]:focus {
+  border: 3px solid #555;
+}
+
+h1 {
+  color: white;
+}
+h2 {
+  color: gray;
+}
+h6 {
+  text-align: right;
+}
+
+#logo {
+  background: transparent url(css/logo.jpg) no-repeat;
+  background-repeat: no-repeat;
+  background-position: right top;
+   width: 100%;
+  height: 40px;
+  background-size: contain;
+    border-radius: 25px;
+}
+#logo a {
+  display: block;
+  text-indent: -999px;
+  height: 90px; 
+  width: 240px;
+  margin: none;
+  border-radius: 25px;
+}
+
+</style>
+</head>
+
+<body ng-app="myApp">
+
+<div class="header">
+  <h1>Vendimia</h1>
+  <h1 id="logo">
+      <a href="#/!" title="Vendimia">Vendimia</a>
+    </h1>
+ 
+</div>
+
+<div class="row">
+  <div class="col-2 col-s-2 menu">
+    <ul class="nav">
+      <li><a href="#/!" class="fa fa-certificate">Inicio</a>
+        <ul>
+          <li><a href="#!articulos" class="fa fa-th-list ">Articulos</a></li>
+          <li><a href="#!clientes" class="fa fa-user-o">Clientes</a></li>
+          <li><a href="#!general" class="fa fa-cogs">General</a></li>
+          <li><a href="#!ventas" class="fa fa-shopping-cart ">Ventas</a></li>
+         </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!--aqui estara el contenedor-->
+  <div class="col-9 col-s-9" ng-view>
+    
+
+  </div>
+
+
+</div>
+
+<div class="footer">
+  <p>Vendimia 2018.</p>
+</div>
+
+
+
+<script>
+var app = angular.module("myApp", [
+    "ngRoute",
+    "vendimiaControllers"]);
+
+app.config(function($routeProvider) {
+    $routeProvider
+    .when("/", {
+        redirectTo: '/'
+    })
+    .when("/clientes", {
+        templateUrl : "clientes.html",
+        controller: 'clientesCtrl'
+    })
+    .when("/articulos", {
+        templateUrl : "articulos.html",
+        controller: 'articulosCtrl'
+    })
+    .when("/general", {
+        templateUrl : "configeneral.html",
+        controller: 'configeneralCtrl'
+    }).
+    when("/ventas", {
+        templateUrl : "ventas.html",
+        controller: 'ventasCtrl'
+    }).
+    otherwise({
+        redirectTo: '/'
+      });
+});
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
+
